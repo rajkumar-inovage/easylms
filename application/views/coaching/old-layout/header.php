@@ -57,6 +57,7 @@
 	<link rel="manifest" href="<?php echo base_url ('manifest.json'); ?>">
 
 </head>
+
 <body class="<?php if (isset($body_class)) echo $body_class; ?>">
 	<?php
         $coaching_id = $this->session->userdata ('coaching_id');
