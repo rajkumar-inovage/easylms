@@ -1,4 +1,4 @@
-const appPath = 'http://localhost/easylms-ci/';
+const appPath = 'http://localhost/easylms/';
 const themePath = `${appPath}themes/dore/assets/`
 const logoutPath = 'login/login_actions/logout';
 const updatePath = 'login/login_actions/update_session';
