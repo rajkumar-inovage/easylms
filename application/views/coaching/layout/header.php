@@ -199,6 +199,7 @@
             </div>
         </div>
     </nav>
+    
     <div class="menu">
         <div class="main-menu">
             <div class="scroll">
@@ -210,7 +211,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#layouts">
+                        <a href="#pages">
                             <i class="iconsminds-digital-drawing"></i> Pages
                         </a>
                     </li>
@@ -219,21 +220,7 @@
                             <i class="iconsminds-air-balloon-1"></i> Applications
                         </a>
                     </li>
-                    <li>
-                        <a href="#ui">
-                            <i class="iconsminds-pantone"></i> UI
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#menu">
-                            <i class="iconsminds-three-arrow-fork"></i> Menu
-                        </a>
-                    </li>
-                    <li>
-                        <a href="Blank.Page.html">
-                            <i class="iconsminds-bucket"></i> Blank Page
-                        </a>
-                    </li>
+                    
                     <li>
                         <a href="https://dore-jquery-docs.coloredstrategies.com" target="_blank">
                             <i class="iconsminds-library"></i> Docs
@@ -266,6 +253,32 @@
                             <i class="simple-icon-doc"></i> <span class="d-inline-block">Content</span>
                         </a>
                     </li>
+                </ul>
+                <ul class="list-unstyled" data-link="pages">
+                    <?php
+                        $main_menu = $this->session->userdata ('MAIN_MENU');
+                        $coaching_id = $this->session->userdata ('coaching_id');
+                        // Side-menu
+                        if (! empty ($main_menu)) {
+                            foreach ($main_menu as $menu) {
+                                $link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id;
+                                if ($this->session->userdata ('role_id') == USER_ROLE_STUDENT) {
+                                    $link .= '/'.$this->session->userdata ('member_id');
+                                }
+                                ?>
+                    <li class="">
+                        <!-- <a href="Dashboard.Default.html">
+                            <i class="simple-icon-rocket"></i> <span class="d-inline-block">Courses</span>
+                        </a> -->
+                        <a class="text-primary" href="<?php echo site_url($link); ?>">
+                            <?php echo $menu['icon_img']; ?>
+                            <?php echo $menu['menu_desc']; ?>
+                        </a>
+                    </li>
+                    <?php
+                }
+            }
+            ?>
                 </ul>
             </div>
         </div>
