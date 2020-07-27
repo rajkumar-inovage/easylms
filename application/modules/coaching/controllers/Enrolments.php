@@ -38,10 +38,13 @@ class Enrolments extends MX_Controller {
 		}
 		
 		$data['all_batches'] = $result;
-
-		$data['toolbar_buttons'] = $this->toolbar_buttons;
-		$data['toolbar_buttons']['<i class="fa fa-plus"></i> New Batch'] = 'coaching/enrolments/create_batch/'.$coaching_id.'/'.$course_id;
+		$is_admin = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
+		if($is_admin){
+			$data['toolbar_buttons'] = $this->toolbar_buttons;
+			$data['toolbar_buttons']['<i class="fa fa-plus"></i> New Batch'] = 'coaching/enrolments/create_batch/'.$coaching_id.'/'.$course_id;
+		}
 		$data["bc"] = array ( 'Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
+		$data['is_admin'] = $is_admin;
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/batches', $data);
@@ -53,6 +56,8 @@ class Enrolments extends MX_Controller {
 		$data["coaching_id"] 	= $coaching_id;
 		$data["course_id"] 		= $course_id;
 		$data["batch_id"] 		= $batch_id;
+		$is_admin = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
+		$data['is_admin'] = $is_admin;
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$data['toolbar_buttons']['<i class="fa fa-plus"></i> New Batch'] = 'coaching/enrolments/create_batch/'.$coaching_id.'/'.$course_id;
 		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
@@ -72,10 +77,18 @@ class Enrolments extends MX_Controller {
 		$data["batch_id"] 		= $batch_id;
 		$data["course_id"] 		= $course_id;
 		$data['add_users'] 		= $add_users;
+
+		if ($batch_id > 0) {
+			$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
+		} else {
+			$data["bc"] = array ( 'Batches'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);			
+		}
 		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
+		$is_admin = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
+		$data['is_admin'] = $is_admin;
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
-		$users_not_in_batch = $this->enrolment_model->users_not_in_batch ($coaching_id, $batch_id);
+		$users_not_in_batch = $this->enrolment_model->users_not_in_batch ($coaching_id, $course_id, $batch_id);
 		if (! empty($users_not_in_batch)) {
 		    $num_users_notin = count($users_not_in_batch);
 		} else {
@@ -83,7 +96,7 @@ class Enrolments extends MX_Controller {
 		}
 		$data['num_users_notin'] = $num_users_notin;
 		
-		$bu = $this->enrolment_model->batch_users ($coaching_id, $batch_id);
+		$bu = $this->enrolment_model->batch_users ($coaching_id, $course_id, $batch_id);
 		if (! empty($bu)) {
 		    $num_users_in = count($bu);
 		} else {
@@ -91,32 +104,21 @@ class Enrolments extends MX_Controller {
 		}
 		$data['num_users_in'] = $num_users_in;
 		
-		$teachers = $this->courses_model->get_teachers_assigned ($coaching_id, $course_id);
-		if (! empty ($teachers)) {
-			$num_teachers = count ($teachers);
-		} else {
-			$num_teachers = 0;
-		}
-
+		
 		if ($add_users == USER_ROLE_STUDENT) {
-		    $result = $users_not_in_batch;
-		} else if ($add_users == USER_ROLE_TEACHER) {
-		    $result = $teachers;
+		    $result = $users_not_in_batch;		
 		} else {
 		    $result = $bu;
 		}		
 		$data['result'] = $result;
-
-		$data['teachers'] = $teachers;
-		$data['num_teachers'] = $num_teachers;
-
+		
 		$data['script'] = $this->load->view('users/scripts/batch_users', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/batch_users', $data); 
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 	
-	public function schedule ($coaching_id=0, $course_id=0, $batch_id=0) {
+	public function schedule ($coaching_id=0, $course_id=0, $batch_id=0, $start=0) {
 		
 		$data['page_title'] 	= 'Schedule';
 		$data['coaching_id'] 	= $coaching_id;
@@ -124,8 +126,38 @@ class Enrolments extends MX_Controller {
 		$data['batch_id'] 		= $batch_id;
 
 		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
-		$data['toolbar_buttons'] = $this->toolbar_buttons;
-		$data['toolbar_buttons']['<i class="fa fa-plus"></i> Create Schedule'] = 'coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id;
+		$is_admin = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
+		$data['is_admin'] = $is_admin;
+		if($is_admin){
+			$data['toolbar_buttons'] = $this->toolbar_buttons;
+			$data['toolbar_buttons']['<i class="fa fa-plus"></i> Create Schedule'] = 'coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id;
+		}
+
+		$data['batch'] = $batch = $this->enrolment_model->get_batch ($coaching_id, $course_id, $batch_id);
+
+		$schedule = [];
+		$interval = 24 * 60 * 60; 		// 1 day in seconds
+		if ($start == 0) {
+			$start_date = $batch['start_date'];
+		} else {
+			$start_date = $start;
+		}
+		$count = 0;
+		for ($i=$start_date; $i<=$batch['end_date']; $i=$i+$interval) {
+			// get data for this date
+			$scd = $this->enrolment_model->get_schedule_data ($coaching_id, $course_id, $batch_id, $i);		
+			$schedule[$i] = $scd;
+			$count++;
+			if ($count >= 7) {
+				break;
+			}
+		}
+
+		$data['start_date'] = $start_date;
+		$data['end_date'] = $batch['end_date'];
+		$data['interval'] = $interval;
+		$data['schedule'] = $schedule;
+
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/schedule', $data);
@@ -145,10 +177,20 @@ class Enrolments extends MX_Controller {
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$data['toolbar_buttons']['<i class="fa fa-plus"></i> Create Schedule'] = 'coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id;
 
-		$data['batch'] = $this->enrolment_model->get_batch ($coaching_id, $course_id, $batch_id);
+		$data['batch'] = $batch = $this->enrolment_model->get_batch ($coaching_id, $course_id, $batch_id);
 		$data['classrooms'] = $this->coaching_model->get_classrooms ($coaching_id, $course_id);
 		$data['instructors'] = $this->enrolment_model->get_course_instructors ($coaching_id, $course_id);
-		$data['schedule'] = $this->enrolment_model->get_course_schedule ($coaching_id, $course_id, $batch_id);
+		//$data['schedule'] = $schedule = $this->enrolment_model->get_course_schedule ($coaching_id, $course_id, $batch_id);	
+
+		$schedule = [];
+		$interval = 24 * 60 * 60; 		// 1 day in seconds
+		for ($i=$batch['start_date']; $i<=$batch['end_date']; $i=$i+$interval) { 
+			// get data for this date
+			$scd = $this->enrolment_model->get_schedule_data ($coaching_id, $course_id, $batch_id, $i);		
+			$schedule[$i] = $scd;
+		}
+
+		$data['schedule'] = $schedule;
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/create_schedule', $data);

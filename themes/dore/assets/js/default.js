@@ -1,5 +1,4 @@
-const appPath = 'http://localhost/easylms/';
-const themePath = `${appPath}themes/dore/assets/`
+const appPath = 'http://localhost/repos/easylms-new/'; 
 const logoutPath = 'login/login_actions/logout';
 const updatePath = 'login/login_actions/update_session';
 const applicationServerPublicKey = 'BBpQAy6d2Q1LKgwAqLU96oHM1Ugyvyq8eDiPlyptO40juyjFQV9wgC6Sem2VcjmuFKY081z30DwLYpz3kF9YA8A';

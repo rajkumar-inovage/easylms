@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
             <div class="row app-row">
@@ -108,6 +109,55 @@
                             </div>
                         </div>
                         <?php 
+=======
+<div class="card card-default mb-4">
+	<ul class="list-group sortable" >
+		<li class="list-group-item media d-none">
+			<div class="media-left">#</div>
+			<div class="media-left"></div>
+			<div class="media-left"></div>
+			<div class="media-body">Title</div>
+			<div class="media-right">For Demo</div>
+			<div class="media-right">Actions</div>
+		</li>
+		<?php 
+		$i = 1;
+		if ( ! empty ($lessons)) { 
+			foreach ($lessons as $row) { 
+				?>
+				<li class="list-group-item media" data-id="<?php echo $row['lesson_id']; ?>" data-name="<?php echo $i; ?>">
+					<div class="media-left"><?php echo $i; ?></div>
+					<div class="media-left">
+						<span style="cursor: pointer;"><i class="fa fa-arrows-alt"></i></span>
+					</div>
+					<div class="media-left">
+						<?php 
+							if ($row['status'] == LESSON_STATUS_PUBLISHED) {
+								echo '<i class="fa fa-circle text-success"></i>';
+							} else {
+								echo '<i class="fa fa-circle text-secondary"></i>';
+							}
+						?>						
+					</div>
+					<div class="media-body">
+						<div class="text-muted">Chapter <?php echo $i; ?></div>
+						<?php echo anchor('coaching/lessons/create/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], $row['title'], array('title'=>$row['title'], 'class'=>'')); ?>
+						<br>
+						<?php 
+						$description = strip_tags ($row['description']);
+						$description = character_limiter ($description, 150);
+						echo $description;
+						?>
+					</div>
+					<div class="media-right">
+						<div class="btn-group">
+							<?php echo anchor ('coaching/courses/preview/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], '<i class="fa fa-search"></i>', ['class'=>'btn btn-primary btn-sm']); ?>
+							<?php echo anchor ('coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], 'Content', ['class'=>'btn btn-info btn-sm']); ?>
+						</div>
+					</div>
+				</li>
+				<?php 
+>>>>>>> 85db78e65766255db0cacd69e611776a1f814c92
 				$i++; 
 			} 
 		} else {
