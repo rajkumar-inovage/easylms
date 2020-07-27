@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
     <div class="row app-row">
         <?php if (!empty($courses)): ?>
         <div class="col-12">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-=======
+
 <div class="row">
   <div class="col-lg-3">
     <div class="card border-0 card-default mb-2">
@@ -60,7 +60,7 @@
                   </i> All Courses
                 </a>
               </div>
->>>>>>> 85db78e65766255db0cacd69e611776a1f814c92
+
             </div>
           </li>
           <?php if (!empty($categories)): ?>
@@ -85,7 +85,7 @@
               </div>
               <?php endif; ?>
             </div>
-<<<<<<< HEAD
+
             <div class="separator mb-5"></div>
 
             <div class="list disable-text-selection" data-check-all="checkAll">
@@ -124,7 +124,7 @@
                             <span class="custom-control-label">&nbsp;</span>
                         </label>
                     </div>
-=======
+
           </li>
           <?php endforeach;?>
           <?php endif;?>
@@ -184,7 +184,7 @@
                     <?php endif; ?>
                     style="text-indent: -99999px;"
                   >&nbsp;</label>
->>>>>>> 85db78e65766255db0cacd69e611776a1f814c92
+
                 </div>
                 <?php // echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? '<span class="badge badge-pill badge-success">Active</span>' : '<span class="badge badge-pill badge-danger">Inactive</span>'; ?>
               </td>

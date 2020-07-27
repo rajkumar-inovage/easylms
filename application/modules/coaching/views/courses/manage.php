@@ -152,7 +152,6 @@
             </div>
         </div>
 
-
         <div class="app-menu">
             <div class="p-4 h-100">
                 <div class="scroll">
