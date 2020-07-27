@@ -5,7 +5,7 @@
                 <h1>Courses</h1>
                 <div class="top-right-button-container">
                     <button type="button"
-                        class="btn btn-primary btn-lg top-right-button mr-1 dropdown-toggle dropdown-toggle-split top-right-button top-right-button-single"
+                        class="btn btn-primary btn-lg top-right-button mr-1 dropdown-toggle dropdown-toggle-split top-right-button top-right-button-single mb-1 mb-lg-0"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         ADD NEW
                     </button>
@@ -75,7 +75,7 @@
                                 <i class="simple-icon-book-open heading-icon pr-2"></i>
                                 <span class="align-middle d-inline-block pt-1"><?php echo $course['title']; ?></span>
                             </a>
-                            <p class="mb-0 text-muted text-small w-15 w-xs-100">
+                            <p class="mb-0 text-muted text-small w-20 w-xs-100">
                               <?php echo date('j<\s\up>S</\s\up> F, Y', $course['created_on']); ?>
                                 
                             </p>
@@ -84,19 +84,6 @@
                             </p>
                             <div class="w-10 w-xs-100 pt-2 pt-md-0">
                               <?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? '<span class="badge badge-pill badge-outline-success">Active</span>' : '<span class="badge badge-pill badge-outline-danger">Inactive</span>'; ?>
-                            </div>
-                            <div class="w-10 w-xs-100 pt-2 pt-md-0 d-block text-left text-md-right">
-                              <a
-                                href="javascript: void(0);"
-                                onclick="show_confirm('This will <?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? 'Inactive' : 'Active'; ?> this course, Are you sure?', '<?php echo site_url ('coaching/courses_actions/toggle_course_status/'.$coaching_id.'/'.$cat_id.'/'.$course['course_id'].'/'.$toggle_to); ?>')"
-                                data-toggle="tooltip"
-                                data-placement="left"
-                                class="btn p-0 height-30 width-30 float-left float-md-right rounded-circle d-flex align-items-center justify-content-center mr-2 <?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? 'btn-danger' : 'btn-success'; ?>"
-                                title="<?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? 'Set Inactive' : 'Set Active'; ?>"
-                                style="font-size: 16px; width:30px; height:30px;"
-                              >
-                                <?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? '<i class="fa fa-ban"></i>' : '<i class="fa fa-check"></i>'; ?>
-                              </a>
                             </div>
                             <div class="d-block w-md-30 w-lg-20">
                                 <a href="<?php echo site_url ('coaching/courses/manage/'.$coaching_id.'/'.$course['course_id']); ?>" class="btn btn-primary btn-sm top-right-button mr-1 text-decoration-none mt-3 mt-md-0"><i class="fa fa-cog"></i>

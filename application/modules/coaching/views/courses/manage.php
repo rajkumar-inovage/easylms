@@ -1,5 +1,3 @@
-
-
 <div class="row app-row">
                 <div class="col-12">
                     <div class="mb-2">
@@ -157,7 +155,7 @@
         <div class="app-menu">
             <div class="p-4 h-100">
                 <div class="scroll">
-                    <p class="text-muted text-medium">Courses</p>
+                    <p class="lead-text text-medium">All Courses</p>
                     <ul class="list-unstyled mb-5">
                         <li class="active">
                             <a href="#" class="d-flex">

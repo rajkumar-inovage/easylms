@@ -85,7 +85,7 @@ function loadStyle(href, callback) {
   function onStyleCompleteDelayed() {
     $("body").addClass(direction);
     $("html").attr("dir", direction);
-    $("body").addClass(radius);
+    // $("body").addClass(radius);
     $("body").dore();
   }
 
