@@ -8,11 +8,19 @@ Table of Contents
 
 /* 01. Css Loading Util */
 function loadStyle(href, callback) {
+
+  if (callback) {
+      callback();
+  }
+  /*
+  Overriding default script and loading in header
   for (var i = 0; i < document.styleSheets.length; i++) {
     if (document.styleSheets[i].href == href) {
-      return;
+      //return;
     }
   }
+
+
   var head = document.getElementsByTagName("head")[0];
   var link = document.createElement("link");
   link.rel = "stylesheet";
@@ -29,6 +37,7 @@ function loadStyle(href, callback) {
   } else {
     head.appendChild(link);
   }
+  */
 }
 
 /* 02. Theme Selector, Layout Direction And Initializer */
@@ -39,7 +48,7 @@ function loadStyle(href, callback) {
 
   var themeColorsDom = '<div class="theme-colors"><div class="p-4"><p class="text-muted mb-2">Light Theme</p><div class="d-flex flex-row justify-content-between mb-4"><a href="#" data-theme="dore.light.blue.min.css" class="theme-color theme-color-blue"></a><a href="#" data-theme="dore.light.purple.min.css" class="theme-color theme-color-purple"></a><a href="#" data-theme="dore.light.green.min.css" class="theme-color theme-color-green"></a><a href="#" data-theme="dore.light.orange.min.css" class="theme-color theme-color-orange"></a><a href="#" data-theme="dore.light.red.min.css" class="theme-color theme-color-red"></a></div><p class="text-muted mb-2">Dark Theme</p><div class="d-flex flex-row justify-content-between"><a href="#" data-theme="dore.dark.blue.min.css" class="theme-color theme-color-blue"></a><a href="#" data-theme="dore.dark.purple.min.css" class="theme-color theme-color-purple"></a><a href="#" data-theme="dore.dark.green.min.css" class="theme-color theme-color-green"></a><a href="#" data-theme="dore.dark.orange.min.css" class="theme-color theme-color-orange"></a><a href="#" data-theme="dore.dark.red.min.css" class="theme-color theme-color-red"></a></div></div><div class="p-4"><p class="text-muted mb-2">Border Radius</p><div class="custom-control custom-radio custom-control-inline"><input type="radio" id="roundedRadio" name="radiusRadio" class="custom-control-input radius-radio" data-radius="rounded"><label class="custom-control-label" for="roundedRadio">Rounded</label></div><div class="custom-control custom-radio custom-control-inline"><input type="radio" id="flatRadio" name="radiusRadio" class="custom-control-input radius-radio" data-radius="flat"><label class="custom-control-label" for="flatRadio">Flat</label></div></div><div class="p-4"><p class="text-muted mb-2">Direction</p><div class="custom-control custom-radio custom-control-inline"><input type="radio" id="ltrRadio" name="directionRadio" class="custom-control-input direction-radio" data-direction="ltr"><label class="custom-control-label" for="ltrRadio">Ltr</label></div><div class="custom-control custom-radio custom-control-inline"><input type="radio" id="rtlRadio" name="directionRadio" class="custom-control-input direction-radio" data-direction="rtl"><label class="custom-control-label" for="rtlRadio">Rtl</label></div></div><a href="#" class="theme-button"> <i class="simple-icon-magic-wand"></i> </a></div>';
 
-  $("body").append(themeColorsDom);
+  //$("body").append(themeColorsDom);
 
 
   /* Default Theme Color, Border Radius and  Direction */
@@ -76,8 +85,8 @@ function loadStyle(href, callback) {
   $(".radius-radio[data-radius='" + radius + "']").attr("checked", true);
   $("#switchDark").attr("checked", theme.indexOf("dark") > 0 ? true : false);
 
-  loadStyle(`${themePath}css/${scrollbar}`);
-  loadStyle(`${themePath}css/${theme}`, onStyleComplete);
+  loadStyle(appPath + "themes/dore/assets/css/" + scrollbar);
+  loadStyle(appPath + "themes/dore/assets/css/" + theme, onStyleComplete);
   function onStyleComplete() {
     setTimeout(onStyleCompleteDelayed, 300);
   }

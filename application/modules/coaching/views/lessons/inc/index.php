@@ -1,12 +1,23 @@
 <div class="card card-default mb-4">
-	<ul class="list-group" >
+	<ul class="list-group sortable" >
+		<li class="list-group-item media d-none">
+			<div class="media-left">#</div>
+			<div class="media-left"></div>
+			<div class="media-left"></div>
+			<div class="media-body">Title</div>
+			<div class="media-right">For Demo</div>
+			<div class="media-right">Actions</div>
+		</li>
 		<?php 
 		$i = 1;
 		if ( ! empty ($lessons)) { 
 			foreach ($lessons as $row) { 
 				?>
-				<li class="list-group-item media">
+				<li class="list-group-item media" data-id="<?php echo $row['lesson_id']; ?>" data-name="<?php echo $i; ?>">
 					<div class="media-left"><?php echo $i; ?></div>
+					<div class="media-left">
+						<span style="cursor: pointer;"><i class="fa fa-arrows-alt"></i></span>
+					</div>
 					<div class="media-left">
 						<?php 
 							if ($row['status'] == LESSON_STATUS_PUBLISHED) {
@@ -27,10 +38,10 @@
 						?>
 					</div>
 					<div class="media-right">
-						<?php echo anchor ('coaching/courses/preview/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], '<i class="fa fa-search"></i>', ['class'=>'btn btn-primary btn-sm']); ?>
-					</div>
-					<div class="media-right">
-						<?php echo anchor ('coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], 'Content', ['class'=>'btn btn-info btn-sm']); ?>
+						<div class="btn-group">
+							<?php echo anchor ('coaching/courses/preview/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], '<i class="fa fa-search"></i>', ['class'=>'btn btn-primary btn-sm']); ?>
+							<?php echo anchor ('coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], 'Content', ['class'=>'btn btn-info btn-sm']); ?>
+						</div>
 					</div>
 				</li>
 				<?php 
